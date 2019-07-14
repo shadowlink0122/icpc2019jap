@@ -90,20 +90,12 @@ void getPoint(int &xa, int &ya,int &za, int &xb, int &yb,int &zb, int sf){
     xa = 0,   ya = 0,   za = 0;
     xb = n,   yb = n,   zb = n;
 
-    switch(sf){
-        case 1:
-            zb = 0+1; break;
-        case 2:
-            xb = 0+1; break;
-        case 3:
-            za = n-1; break;
-        case 4:
-            xa = n-1; break;
-        case 5:
-            ya = n-1; break;
-        case 6:
-            yb = 0+1; break;
-    }
+    if     (sf == 1)  zb = 0+1;
+    else if(sf == 2)  xb = 0+1;
+    else if(sf == 3)  za = n-1;
+    else if(sf == 4)  xa = n-1;
+    else if(sf == 5)  ya = n-1;
+    else  /*sf == 6*/ yb = 0+1;
 }
 
 bool check(){
