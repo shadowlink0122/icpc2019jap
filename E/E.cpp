@@ -87,32 +87,22 @@ void getPiece(char p[10][10], int pi, int state){
 void getPoint(int &xa, int &ya,int &za, int &xb, int &yb,int &zb, int sf){
     sf += 1;
 
+    xa = 0,   ya = 0,   za = 0;
+    xb = n,   yb = n,   zb = n;
+
     switch(sf){
         case 1:
-            xa = 0,   ya = 0,   za = 0;
-            xb = n,   yb = n,   zb = 0+1;
-            break;
+            zb = 0+1; break;
         case 2:
-            xa = 0,   ya = 0,   za = 0;
-            xb = 0+1, yb = n,   zb = n;
-            break;
+            xb = 0+1; break;
         case 3:
-            xa = 0,   ya = 0,   za = n-1;
-            xb = n,   yb = n,   zb = n;
-            break;
-        
+            za = n-1; break;
         case 4:
-            xa = n-1, ya = 0,   za = 0;
-            xb = n,   yb = n,   zb = n;
-            break;
+            xa = n-1; break;
         case 5:
-            xa = 0,   ya = n-1, za = 0;
-            xb = n,   yb = n,   zb = n;
-            break;
+            ya = n-1; break;
         case 6:
-            xa = 0,   ya = 0,   za = 0;
-            xb = n,   yb = 0+1, zb = n;
-            break;
+            yb = 0+1; break;
     }
 }
 
