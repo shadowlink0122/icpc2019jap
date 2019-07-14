@@ -32,7 +32,7 @@ typedef vector<P> vp;
 #define sz size()
 #define endl "\n"
 #define print(X) cout << (X) << "\n"
-// // #define input(X) getline(cin,X)
+// #define input(X) getline(cin,X)
 static const ll  INF = 1e9+7;
 static const ll INFL = 1e18+7;
 ll n,m,l, p;
@@ -46,8 +46,8 @@ char box[10][10][10];
 #define NONE 0
 
 void init(){
-    memset(piece, NONE, sizeof(piece));
-    memset(box, NONE, sizeof(box));
+    clr(piece, NONE);
+    clr(box, NONE);
 }
 
 void lotate(char p[10][10], int index,int pn){
@@ -89,29 +89,29 @@ void getPoint(int &xa, int &ya,int &za, int &xb, int &yb,int &zb, int sf){
 
     switch(sf){
         case 1:
-            xa = 0, ya = 0, za = 0;
-            xb = n, yb = n, zb = 0+1;
+            xa = 0,   ya = 0,   za = 0;
+            xb = n,   yb = n,   zb = 0+1;
             break;
         case 2:
-            xa = 0, ya = 0, za = 0;
-            xb = 0+1, yb = n, zb = n;
+            xa = 0,   ya = 0,   za = 0;
+            xb = 0+1, yb = n,   zb = n;
             break;
         case 3:
-            xa = 0, ya = 0, za = n-1;
-            xb = n, yb = n, zb = n;
+            xa = 0,   ya = 0,   za = n-1;
+            xb = n,   yb = n,   zb = n;
             break;
         
         case 4:
-            xa = n-1, ya = 0, za = 0;
-            xb = n, yb = n, zb = n;
+            xa = n-1, ya = 0,   za = 0;
+            xb = n,   yb = n,   zb = n;
             break;
         case 5:
-            xa = 0, ya = n-1, za = 0;
-            xb = n, yb = n, zb = n;
+            xa = 0,   ya = n-1, za = 0;
+            xb = n,   yb = n,   zb = n;
             break;
         case 6:
-            xa = 0, ya = 0, za = 0;
-            xb = n, yb = 0+1, zb = n;
+            xa = 0,   ya = 0,   za = 0;
+            xb = n,   yb = 0+1, zb = n;
             break;
     }
 }
@@ -134,6 +134,7 @@ bool setting(int pi, int state, int sf){
     char p[10][10];
     int xa, ya, za;
     int xb, yb, zb;
+
     getPiece(p, pi, state);
     getPoint(xa, ya, za, xb, yb, zb, sf);
 
@@ -181,6 +182,7 @@ void undo(int pi, int state, int sf){
 
 bool dfs(int depth){
     if(depth > 5)return check();
+
     rep(state,0,8){
         rep(place,0,6){
             if(setting(depth, state, place)){
