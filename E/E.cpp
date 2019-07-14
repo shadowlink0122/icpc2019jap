@@ -43,19 +43,11 @@ char field[202][202];
 char piece[6][8][10][10];
 char box[10][10][10];
 
-void init(){
-    // memset(piece, 0, sizeof(piece));
-    // memset(box, 0, sizeof(box));
-    rep(i,0,6)
-        rep(j,0,8)
-            rep(x,0,10)
-                rep(y,0,10)
-                    piece[i][j][x][y] = 'N';
+#define NONE 0
 
-    rep(j,0,10)
-        rep(x,0,10)
-            rep(y,0,10)
-                box[j][x][y] = 'N';
+void init(){
+    memset(piece, NONE, sizeof(piece));
+    memset(box, NONE, sizeof(box));
 }
 
 void printAfterInput(char p[10][10]){
@@ -104,9 +96,9 @@ void input(){
 void getPiece(char p[10][10], int pi, int state){
     rep(x,0,n){
         rep(y,0,n){
-            assert(piece[pi][state][x][y] == 'X' || piece[pi][state][x][y] == '.');
+            // assert(piece[pi][state][x][y] == 'X' || piece[pi][state][x][y] == '.');
             p[x][y] = piece[pi][state][x][y];
-            assert(p[x][y] == 'X' || p[x][y] == '.');
+            // assert(p[x][y] == 'X' || p[x][y] == '.');
         }
     }
 }
@@ -215,9 +207,9 @@ void undo(int pi, int state, int sf){
     rep(x, xa, xb)
         rep(y,ya, yb)
             rep(z, za, zb)
-                if(sf==0 || sf==2)     {if(p[x][y] == 'X')box[x][y][z] = 'N';}
-                else if(sf==1 || sf==3){if(p[y][z] == 'X')box[x][y][z] = 'N';}
-                else                   {if(p[x][z] == 'X')box[x][y][z] = 'N';}
+                if(sf==0 || sf==2)     {if(p[x][y] == 'X')box[x][y][z] = NONE;}
+                else if(sf==1 || sf==3){if(p[y][z] == 'X')box[x][y][z] = NONE;}
+                else                   {if(p[x][z] == 'X')box[x][y][z] = NONE;}
 }
 
 bool dfs(int depth){
