@@ -178,26 +178,29 @@ bool setting(int pi, int state, int sf){
     getPiece(p, pi, state);
     getPoint(&xa, &ya, &za, &xb, &yb, &zb, sf);
 
-    puts("Setting");
+    // puts("Setting");
     bool st = true;
 
     rep(x, xa, xb){
         rep(y,ya, yb){
             rep(z, za, zb){
-                printf("%c:%c, ",box[x][y][z], p[x][y]);
-                if(box[x][y][z] == 'X' && p[x][y] == 'X')
-                    st = false;
+                //printf("%c:%c, ",box[x][y][z], p[x][y]);
+                if(sf==0 || sf==2)     {if(box[x][y][z] == 'X' && p[x][y] == 'X')st = false;}
+                else if(sf==1 || sf==3){if(box[x][y][z] == 'X' && p[y][z] == 'X')st = false;}
+                else                   {if(box[x][y][z] == 'X' && p[x][z] == 'X')st = false;}
             }
         }
     }
-    puts("");
+    // puts("");
     if(!st)return st;
     // ok
     rep(x, xa, xb)
         rep(y,ya, yb)
             rep(z, za, zb){
-                assert(p[x][y] == 'X' || p[x][y] == '.');
-                if(p[x][y] == 'X')box[x][y][z] = p[x][y];
+                // assert(p[x][y] == 'X' || p[x][y] == '.');
+                if(sf==0 || sf==2)     {if(p[x][y] == 'X')box[x][y][z] = p[x][y];}
+                else if(sf==1 || sf==3){if(p[y][z] == 'X')box[x][y][z] = p[y][z];}
+                else                   {if(p[x][z] == 'X')box[x][y][z] = p[x][z];}
             }
     return true;
 }
@@ -212,9 +215,9 @@ void undo(int pi, int state, int sf){
     rep(x, xa, xb)
         rep(y,ya, yb)
             rep(z, za, zb)
-                if(p[x][y] == 'X'){
-                    box[x][y][z] = 'N';
-                }
+                if(sf==0 || sf==2)     {if(p[x][y] == 'X')box[x][y][z] = 'N';}
+                else if(sf==1 || sf==3){if(p[y][z] == 'X')box[x][y][z] = 'N';}
+                else                   {if(p[x][z] == 'X')box[x][y][z] = 'N';}
 }
 
 bool dfs(int depth){
@@ -223,7 +226,7 @@ bool dfs(int depth){
     }
     rep(state,0,8){ // which state
         rep(place,0,6){ // which place
-            printf("depth:%d, State:%lld, place:%lld\n",depth+1, state+1, place+1);
+            // printf("depth:%d, State:%lld, place:%lld\n",depth+1, state+1, place+1);
             if(setting(depth, state, place)){
                 if(dfs(depth+1))return true;
                 undo(depth, state, place);
