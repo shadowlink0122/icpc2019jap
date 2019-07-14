@@ -60,7 +60,6 @@ void lotate(char p[10][10], int index,int pn){
 }
 
 void reverse(int index, int pn){
-    // printf("index:%d, pn=%d\n",index,pn);
     if(index == 8)return;
     rep(x,0,n)
         rep(y,0,n/2)
@@ -141,7 +140,6 @@ bool setting(int pi, int state, int sf){
     rep(x, xa, xb){
         rep(y,ya, yb){
             rep(z, za, zb){
-                //printf("%c:%c, ",box[x][y][z], p[x][y]);
                 if     (sf==0 || sf==2)  {if(box[x][y][z] == 'X' && p[x][y] == 'X')return false;}
                 else if(sf==1 || sf==3)  {if(box[x][y][z] == 'X' && p[y][z] == 'X')return false;}
                 else /* sf==5 || sf==6 */{if(box[x][y][z] == 'X' && p[x][z] == 'X')return false;}
