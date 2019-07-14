@@ -50,16 +50,6 @@ void init(){
     memset(box, NONE, sizeof(box));
 }
 
-void printAfterInput(char p[10][10]){
-  puts("==================");
-  rep(i,0,n){
-    rep(j,0,n){
-      cout << p[i][j];
-    }
-    puts("");
-  }
-}
-
 void lotate(char p[10][10], int index,int pn){
     if(index == 8)return;
     rep(x,0,n){
@@ -70,7 +60,7 @@ void lotate(char p[10][10], int index,int pn){
     lotate(piece[pn][index], index+1, pn);
 }
 
-void flip(int index, int pn){
+void reverse(int index, int pn){
     // printf("index:%d, pn=%d\n",index,pn);
     if(index == 8)return;
     rep(x,0,n){
@@ -78,7 +68,7 @@ void flip(int index, int pn){
             swap(piece[pn][index][x][y], piece[pn][index][x][n-y-1]);
         }
     }
-    flip(index+1, pn);
+    reverse(index+1, pn);
 }
 
 void input(){
@@ -87,18 +77,15 @@ void input(){
         rep(y,0,n){
             scanf("%s",p[y]);
         }
-        // printAfterInput(p);
         lotate(p, 0, i);
-        flip(4, i);
+        reverse(4, i);
     }
 }
 
 void getPiece(char p[10][10], int pi, int state){
     rep(x,0,n){
         rep(y,0,n){
-            // assert(piece[pi][state][x][y] == 'X' || piece[pi][state][x][y] == '.');
             p[x][y] = piece[pi][state][x][y];
-            // assert(p[x][y] == 'X' || p[x][y] == '.');
         }
     }
 }
@@ -135,25 +122,11 @@ void getPoint(int *xa, int *ya,int *za, int *xb, int *yb,int *zb, int sf){
     }
 }
 
-void out(int xa, int ya, int za, int xb, int yb, int zb){
-    puts("");
-
-    rep(x,xa,xb){
-        rep(y,ya,yb){
-            rep(z,za,zb){
-                cout << box[x][y][z];
-            }
-        }
-        puts("");
-    }
-}
-
 bool check(){
     int xa, ya, za;
     int xb, yb, zb;
     rep(i,0,6){
         getPoint(&xa, &ya, &za, &xb, &yb, &zb, i);
-        // out(xa,ya,za,xb,yb,zb);
         rep(x, xa, xb)
             rep(y,ya, yb)
                 rep(z, za, zb)
@@ -170,30 +143,29 @@ bool setting(int pi, int state, int sf){
     getPiece(p, pi, state);
     getPoint(&xa, &ya, &za, &xb, &yb, &zb, sf);
 
-    // puts("Setting");
-    bool st = true;
-
     rep(x, xa, xb){
         rep(y,ya, yb){
             rep(z, za, zb){
                 //printf("%c:%c, ",box[x][y][z], p[x][y]);
-                if(sf==0 || sf==2)     {if(box[x][y][z] == 'X' && p[x][y] == 'X')st = false;}
-                else if(sf==1 || sf==3){if(box[x][y][z] == 'X' && p[y][z] == 'X')st = false;}
-                else                   {if(box[x][y][z] == 'X' && p[x][z] == 'X')st = false;}
+                if(sf==0 || sf==2)     {if(box[x][y][z] == 'X' && p[x][y] == 'X')return false;}
+                else if(sf==1 || sf==3){if(box[x][y][z] == 'X' && p[y][z] == 'X')return false;}
+                else                   {if(box[x][y][z] == 'X' && p[x][z] == 'X')return false;}
             }
         }
     }
-    // puts("");
-    if(!st)return st;
+
     // ok
-    rep(x, xa, xb)
-        rep(y,ya, yb)
+    rep(x, xa, xb){
+        rep(y,ya, yb){
             rep(z, za, zb){
                 // assert(p[x][y] == 'X' || p[x][y] == '.');
                 if(sf==0 || sf==2)     {if(p[x][y] == 'X')box[x][y][z] = p[x][y];}
                 else if(sf==1 || sf==3){if(p[y][z] == 'X')box[x][y][z] = p[y][z];}
                 else                   {if(p[x][z] == 'X')box[x][y][z] = p[x][z];}
             }
+        }
+    }
+
     return true;
 }
 
@@ -204,21 +176,23 @@ void undo(int pi, int state, int sf){
     getPiece(p, pi, state);
     getPoint(&xa, &ya, &za, &xb, &yb, &zb, sf);
 
-    rep(x, xa, xb)
-        rep(y,ya, yb)
-            rep(z, za, zb)
+    rep(x, xa, xb){
+        rep(y,ya, yb){
+            rep(z, za, zb){
                 if(sf==0 || sf==2)     {if(p[x][y] == 'X')box[x][y][z] = NONE;}
                 else if(sf==1 || sf==3){if(p[y][z] == 'X')box[x][y][z] = NONE;}
                 else                   {if(p[x][z] == 'X')box[x][y][z] = NONE;}
+            }
+        }
+    }
 }
 
 bool dfs(int depth){
     if(depth > 5){
         return check();
     }
-    rep(state,0,8){ // which state
-        rep(place,0,6){ // which place
-            // printf("depth:%d, State:%lld, place:%lld\n",depth+1, state+1, place+1);
+    rep(state,0,8){
+        rep(place,0,6){
             if(setting(depth, state, place)){
                 if(dfs(depth+1))return true;
                 undo(depth, state, place);
@@ -228,27 +202,10 @@ bool dfs(int depth){
     return false;
 }
 
-void printPiece(){
-  rep(i,0,6){// num pf piece
-    puts("=============================");
-    cout << "piece:" << i+1 << endl;
-    rep(j,0,8){// num of state
-      cout << "State:" << j+1 << endl;
-      rep(x,0,n){
-        rep(y,0,n){
-          cout << piece[i][j][x][y];
-        }
-        puts("");
-      }
-    }
-  }
-}
-
 int main() {
     while(cin >> n,n){
         init();
         input();
-        // printPiece();
         cout << (dfs(0) ? "Yes" : "No") << endl;
     }
     return 0;
