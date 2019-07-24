@@ -166,7 +166,7 @@ bool dfs(int depth){
     if(depth > 5)return check();
 
     rep(state,0,8){
-        rep(place,0,6){
+        rep(place,1,6){
             if(setting(depth, state, place)){
                 if(dfs(depth+1))return true;
                 undo(depth, state, place);
@@ -180,8 +180,9 @@ int main() {
     while(cin >> n,n){
         init();
         input();
-        cout << (dfs(0) ? "Yes" : "No") << endl;
+        setting(0, 0, 0);
+        if(dfs(1))puts("Yes");
+        else puts("No");
     }
     return 0;
 }
-
