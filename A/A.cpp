@@ -42,16 +42,13 @@ char field[202][202];
 
 int main(){
 	while(cin >> n >> m, n){
-		int ans = 0;
+		ll ans = 0;
+		clr(d, 0);
 		rep(i,0,m)
 			rep(j,0,n)
-				cin >> dp[i][j];
+				cin >> l, d[j] += l;
 		
-		rep(i,0,n){
-			int total = 0;
-			rep(j,0,m)total += dp[j][i];
-			ans = max(ans, total);
-		}
+		rep(i,0,n)ans = max(ans, d[i]);
 		print(ans);
 	}
 	return 0;
