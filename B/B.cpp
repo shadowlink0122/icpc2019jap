@@ -42,38 +42,29 @@ char field[202][202];
 
 int x = 0,y = 0;
 
-vector<P> get(char c){
-	vector<P> ans;
+P get(char c){
+	P ans = {0, 0};
 	rep(i,0,n){
 		rep(j,0,m){
-			if(field[i][j] == c)ans.pb(P{i,j});
+			if(field[i][j] == c)return P{i, j};
 		}
 	}
 	return ans;
 }
 
-int calc(vector<P> vec){
-	P now;
-	int ans = INF;
-	rep(i,0,vec.sz){
-		P point = vec[i];
-		int l = abs(x-point.first)+abs(y-point.second) + 1;
-		if(l < ans){
-			now = point;
-			ans = l;
-		}
-	}
+int calc(P point){
+	int ans = abs(x-point.first)+abs(y-point.second) + 1;
 
-	x = now.first;
-	y = now.second;
+	x = point.first;
+	y = point.second;
 	return ans;
 }
 
 int solve(){
 	int ans = 0;
 	rep(i,0,s.sz){
-		vector<P> points = get(s[i]);
-		ans += calc(points);
+		P point = get(s[i]);
+		ans += calc(point);
 	}
 	return ans;
 }
